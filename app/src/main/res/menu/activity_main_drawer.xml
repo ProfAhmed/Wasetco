@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Home" />
+        <item
+            android:id="@+id/menu_filter"
+            android:icon="@drawable/ic_filter_list_black_24dp"
+            android:title="Filter" />
+
+        <item
+            android:id="@+id/menu_forSale"
+            android:icon="@android:drawable/radiobutton_on_background"
+            android:title="For Buy" />
+
+        <item
+            android:id="@+id/menu_ForRent"
+            android:icon="@android:drawable/radiobutton_on_background"
+            android:title="For Rent" />
+
+        <item
+            android:id="@+id/menu_agents"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Agents" />
+
+        <item
+            android:id="@+id/menu_myAccount"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="My Account" />
+
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/menu_sayUs"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Say About Us" />
+            <item
+                android:id="@+id/menu_about"
+                android:icon="@drawable/ic_menu_send"
+                android:title="About" />
+
+            <item
+                android:id="@+id/menu_contactUs"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Contact Us" />
+        </menu>
+    </item>
+
+</menu>
