@@ -1,8 +1,11 @@
 package com.example.ahmed.wasetco.data.models;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterItem;
+
 import java.io.Serializable;
 
-public class RealEstateModel implements Serializable {
+public class RealEstateModel implements Serializable, ClusterItem {
 
 
     private Integer id;
@@ -63,7 +66,7 @@ public class RealEstateModel implements Serializable {
     private String propertyInstallment;
     private final static long serialVersionUID = 995853656936627121L;
 
-    public RealEstateModel(String propertyTitle, String address, String description, String price, String bathrooms, String bedrooms, String landArea, String featuredImage) {
+    public RealEstateModel(String propertyTitle, String address, String description, String price, String bathrooms, String bedrooms, String landArea, String featuredImage, String mapLatitude, String mapLongitude) {
         this.propertyTitle = propertyTitle;
         this.address = address;
         this.description = description;
@@ -72,6 +75,8 @@ public class RealEstateModel implements Serializable {
         this.bedrooms = bedrooms;
         this.landArea = landArea;
         this.featuredImage = featuredImage;
+        this.mapLatitude = mapLatitude;
+        this.mapLongitude = mapLongitude;
     }
 
     public Integer getId() {
@@ -306,4 +311,8 @@ public class RealEstateModel implements Serializable {
         this.propertyInstallment = propertyInstallment;
     }
 
+    @Override
+    public LatLng getPosition() {
+        return new LatLng(Double.parseDouble(mapLatitude), Double.parseDouble(mapLongitude));
+    }
 }

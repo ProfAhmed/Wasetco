@@ -31,7 +31,7 @@
         <activity
             android:name=".ui.activities.AgentDetailsActivity"
             android:label="@string/title_activity_agent_details"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

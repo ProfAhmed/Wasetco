@@ -11,16 +11,19 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#1565c0">
+        android:background="@color/toolbar">
 
         <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#00e2e0e0"
+            android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
+
 
         <TextView
             android:id="@+id/tvPageTitle"
@@ -29,6 +32,7 @@
             android:fontFamily="sans-serif-condensed"
             android:text="Filter"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:textColor="@color/pageTitle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/btnBack"

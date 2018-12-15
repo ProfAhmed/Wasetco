@@ -2,7 +2,7 @@ package com.example.ahmed.wasetco.data.models;
 
 public class AgentModel {
 
-    private Integer id;
+    private int id;
     private String usertype;
     private String name;
     private String email;
@@ -21,7 +21,9 @@ public class AgentModel {
     private String refereId;
     private String parentId;
 
-    public AgentModel(String name, String facebook, String twitter, String gplus, String linkedin, String imageIcon) {
+    public AgentModel(int id, String name, String facebook, String twitter, String gplus, String linkedin, String imageIcon) {
+
+        this.id = id;
         this.name = name;
         this.facebook = facebook;
         this.twitter = twitter;

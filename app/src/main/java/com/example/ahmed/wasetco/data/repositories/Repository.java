@@ -15,6 +15,7 @@ import com.example.ahmed.wasetco.data.models.RealEstateFeaturedModel;
 import com.example.ahmed.wasetco.data.models.RealEstateModel;
 import com.example.ahmed.wasetco.data.models.RealEstateSaleModel;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -43,11 +44,16 @@ public class Repository {
             public void notifyError(String requestType, VolleyError error) {
                 Log.v("ResponseState", "Failer" + error.getMessage());
             }
+
+            @Override
+            public void notifySuccess(String requestType, JSONArray response) {
+
+            }
         };
 
         mVolleyService = new VolleyService(mResultCallback, mContext);
 
-        mVolleyService.getDataVolley(Constants.GET_CALL, Constants.GET_PROPERTIES);
+        mVolleyService.getDataVolley(Constants.GET_CALL_JSON_OBJECT, Constants.GET_PROPERTIES);
 
         return data;
     }
@@ -67,11 +73,16 @@ public class Repository {
             public void notifyError(String requestType, VolleyError error) {
                 Log.v("ResponseStateFeatured", "Failer" + error.getMessage());
             }
+
+            @Override
+            public void notifySuccess(String requestType, JSONArray response) {
+
+            }
         };
 
         mVolleyService = new VolleyService(mResultCallback, mContext);
 
-        mVolleyService.getDataVolley(Constants.GET_CALL, Constants.GET_FEATURED);
+        mVolleyService.getDataVolley(Constants.GET_CALL_JSON_OBJECT, Constants.GET_FEATURED);
 
         return data;
     }
@@ -93,14 +104,19 @@ public class Repository {
             public void notifyError(String requestType, VolleyError error) {
                 Log.v("ResponseStateFeatured", "Failer" + error.getMessage());
             }
+
+            @Override
+            public void notifySuccess(String requestType, JSONArray response) {
+
+            }
         };
 
         mVolleyService = new VolleyService(mResultCallback, mContext);
 
         if (type.equals("sale")) {
-            mVolleyService.getDataVolley(Constants.GET_CALL, Constants.GET_SALE);
+            mVolleyService.getDataVolley(Constants.GET_CALL_JSON_OBJECT, Constants.GET_SALE);
         } else {
-            mVolleyService.getDataVolley(Constants.GET_CALL, Constants.GET_RENT);
+            mVolleyService.getDataVolley(Constants.GET_CALL_JSON_OBJECT, Constants.GET_RENT);
         }
 
         return data;
@@ -121,11 +137,45 @@ public class Repository {
             public void notifyError(String requestType, VolleyError error) {
                 Log.v("ResponseStateAgents", "Failer" + error.getMessage());
             }
+
+            @Override
+            public void notifySuccess(String requestType, JSONArray response) {
+
+            }
         };
 
         mVolleyService = new VolleyService(mResultCallback, mContext);
 
-        mVolleyService.getDataVolley(Constants.GET_CALL, Constants.GET_AGENTS);
+        mVolleyService.getDataVolley(Constants.GET_CALL_JSON_OBJECT, Constants.GET_AGENTS);
+
+        return data;
+    }
+
+    public LiveData<ArrayList<RealEstateFeaturedModel>> getAgentsRealEstates(String agentId) {
+        final MutableLiveData<ArrayList<RealEstateFeaturedModel>> data = new MutableLiveData<>();
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType, JSONObject response) {
+
+            }
+
+            @Override
+            public void notifyError(String requestType, VolleyError error) {
+                Log.v("ResponseAgentsDetalis", "Failer" + error.getMessage());
+            }
+
+            @Override
+            public void notifySuccess(String requestType, JSONArray response) {
+
+                ArrayList<RealEstateFeaturedModel> agentModels = JsonParser.parseAgentRealEstate(response);
+                data.setValue(agentModels);
+                Log.v("ResponseAgentsDetalis", "Success " + response.toString());
+            }
+        };
+
+        mVolleyService = new VolleyService(mResultCallback, mContext);
+
+        mVolleyService.getDataVolley(Constants.GET_CALL_JSON_ARRAY, Constants.GET_AGENTS_DETAILS + agentId);
 
         return data;
     }

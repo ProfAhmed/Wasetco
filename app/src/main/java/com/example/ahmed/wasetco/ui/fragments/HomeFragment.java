@@ -1,8 +1,6 @@
 package com.example.ahmed.wasetco.ui.fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,7 +15,6 @@ import android.widget.Toast;
 import com.example.ahmed.wasetco.R;
 import com.example.ahmed.wasetco.ui.activities.FilterActivity;
 import com.example.ahmed.wasetco.ui.activities.MainActivity;
-import com.example.ahmed.wasetco.ui.adapters.RealEstatesAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,7 +52,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fragmentShow(RealEstatesFragment.class, "realEsatet");
+        fragmentShow(MapFragment.class, "realEsatet");
         Toast.makeText(getActivity(), "Home", Toast.LENGTH_SHORT).show();
         btnHome.setOnClickListener(this);
         btnFilter.setOnClickListener(this);

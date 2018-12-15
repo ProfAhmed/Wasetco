@@ -48,12 +48,13 @@ public class RealEstatesFragment extends Fragment {
         rvRealEstates.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvRealEstates.setAdapter(adapter);
 
+
         viewModel.getRealEstates().observe(getActivity(), new Observer<ArrayList<RealEstateModel>>() {
             @Override
             public void onChanged(@Nullable ArrayList<RealEstateModel> realEstateModels) {
                 adapter.setRealEstates(realEstateModels);
+
             }
         });
-
     }
 }

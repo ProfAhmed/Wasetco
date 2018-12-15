@@ -1,33 +1,52 @@
 package com.example.ahmed.wasetco.ui.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.ahmed.wasetco.R;
+import com.example.ahmed.wasetco.data.models.RealEstateModel;
+import com.example.ahmed.wasetco.viewmodels.RealEstateViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.mapView)
     MapView mMapView;
-    private GoogleMap googleMap;
+    private GoogleMap mMap;
+
+    RealEstateViewModel viewModel;
+
+    private ClusterManager<RealEstateModel> mClusterManager;
+
 
     public MapFragment() {
         // Required empty public constructor
@@ -51,6 +70,9 @@ public class MapFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        viewModel = ViewModelProviders.of(getActivity()).get(RealEstateViewModel.class);
+
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // needed to get the map to display immediately
@@ -61,22 +83,100 @@ public class MapFragment extends Fragment {
             e.printStackTrace();
         }
 
-        mMapView.getMapAsync(new OnMapReadyCallback() {
+        mMapView.getMapAsync(this);
+
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        mMap = googleMap;
+
+        mClusterManager = new ClusterManager<RealEstateModel>(getActivity(), mMap);
+        mMap.setOnMarkerClickListener(mClusterManager);
+        mMap.setOnCameraChangeListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
+
+        viewModel.getRealEstates().observe(getActivity(), new Observer<ArrayList<RealEstateModel>>() {
             @Override
-            public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
+            public void onChanged(@Nullable ArrayList<RealEstateModel> realEstateModels) {
+
+                for (int i = 0; i < realEstateModels.size(); i++) {
 
 
-                // For dropping a marker at a point on the Map
-                LatLng sydney = new LatLng(-34, 151);
-                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+                    mClusterManager.addItem(realEstateModels.get(i));
+                }
 
-                // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                mClusterManager.cluster();
+
+                final CustomClusterRenderer renderer = new CustomClusterRenderer(getActivity(), mMap, mClusterManager);
+
+                mClusterManager.setRenderer(renderer);
+
+                mClusterManager
+                        .setOnClusterClickListener(new ClusterManager.OnClusterClickListener<RealEstateModel>() {
+                            @Override
+                            public boolean onClusterClick(final Cluster<RealEstateModel> cluster) {
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                                        cluster.getPosition(), (float) Math.floor(mMap
+                                                .getCameraPosition().zoom + 1)), 300,
+                                        null);
+                                return true;
+                            }
+                        });
+
+                mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<RealEstateModel>() {
+                    @Override
+                    public boolean onClusterItemClick(RealEstateModel realEstateModel) {
+
+                        Toast.makeText(getActivity(), realEstateModel.getPropertyTitle(), Toast.LENGTH_SHORT).show();
+
+                        
+                        return true;
+                    }
+                });
+
+                Toast.makeText(getActivity(), realEstateModels.get(0).getPropertyTitle(), Toast.LENGTH_SHORT).show();
             }
         });
 
+
+    }
+
+
+
+    public class CustomClusterRenderer extends DefaultClusterRenderer<RealEstateModel> {
+
+        private final Context mContext;
+
+        public CustomClusterRenderer(Context context, GoogleMap map,
+                                     ClusterManager<RealEstateModel> clusterManager) {
+            super(context, map, clusterManager);
+
+            mContext = context;
+        }
+
+        @Override
+        protected void onBeforeClusterItemRendered(RealEstateModel item,
+                                                   MarkerOptions markerOptions) {
+
+
+            markerOptions.icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_home_black_24dp)).snippet(item.getPropertyTitle());
+
+        }
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, @DrawableRes int vectorDrawableResourceId) {
+        Drawable background = ContextCompat.getDrawable(context, R.drawable.ic_home_black_24dp);
+        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorDrawableResourceId);
+        vectorDrawable.setBounds(40, 20, vectorDrawable.getIntrinsicWidth() + 40, vectorDrawable.getIntrinsicHeight() + 20);
+        Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        background.draw(canvas);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     @Override

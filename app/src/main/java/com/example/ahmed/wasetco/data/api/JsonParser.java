@@ -27,10 +27,12 @@ public class JsonParser {
                 String bedrooms = currentObject.getString("bedrooms");
                 String land_area = currentObject.getString("land_area");
                 String featured_image = currentObject.getString("featured_image");
+                String map_latitude = currentObject.getString("map_latitude");
+                String map_longitude = currentObject.getString("map_longitude");
 
 
                 RealEstateModel realEstateModel = new RealEstateModel(property_title, address, description, price,
-                        bathrooms, bedrooms, land_area, featured_image);
+                        bathrooms, bedrooms, land_area, featured_image, map_latitude, map_longitude);
                 realEstateModels.add(realEstateModel);
             }
         } catch (JSONException e) {
@@ -98,6 +100,7 @@ public class JsonParser {
             JSONArray agentList = jsonObject.getJSONArray("data");
             for (int i = 0; i < agentList.length(); i++) {
                 JSONObject currentObject = agentList.getJSONObject(i);
+                int id = currentObject.getInt("id");
                 String name = currentObject.getString("name");
                 String facebook = currentObject.getString("facebook");
                 String twitter = currentObject.getString("twitter");
@@ -105,12 +108,37 @@ public class JsonParser {
                 String linkedin = currentObject.getString("linkedin");
                 String image_icon = currentObject.getString("image_icon");
 
-                AgentModel agentModel = new AgentModel(name, facebook, twitter, gplus, linkedin, image_icon);
+                AgentModel agentModel = new AgentModel(id, name, facebook, twitter, gplus, linkedin, image_icon);
                 agents.add(agentModel);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return agents;
+    }
+
+    static public ArrayList<RealEstateFeaturedModel> parseAgentRealEstate(JSONArray jsonArray) {
+        ArrayList<RealEstateFeaturedModel> agentRealEstate = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                JSONObject currentObject = jsonArray.getJSONObject(i);
+                String property_name = currentObject.getString("property_name");
+                String price = currentObject.getString("price");
+                String address = currentObject.getString("address");
+                String bathrooms = currentObject.getString("bathrooms");
+                String bedrooms = currentObject.getString("bedrooms");
+                String land_area = currentObject.getString("land_area");
+                String description = currentObject.getString("description");
+                String featured_image = currentObject.getString("featured_image");
+
+                RealEstateFeaturedModel realEstateFeaturedModel = new RealEstateFeaturedModel(property_name, price, address, description,
+                        bathrooms, bedrooms, land_area, featured_image);
+                agentRealEstate.add(realEstateFeaturedModel);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return agentRealEstate;
     }
 }
