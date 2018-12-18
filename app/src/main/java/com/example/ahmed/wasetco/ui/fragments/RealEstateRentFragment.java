@@ -14,12 +14,8 @@ import android.view.ViewGroup;
 
 import com.example.ahmed.wasetco.R;
 import com.example.ahmed.wasetco.data.models.RealEstateSaleModel;
-import com.example.ahmed.wasetco.events.EventAgents;
-import com.example.ahmed.wasetco.events.EventRealEstates;
 import com.example.ahmed.wasetco.ui.adapters.RealEstateSaleAdapter;
 import com.example.ahmed.wasetco.viewmodels.RealEstatSaleViewModel;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -65,4 +61,5 @@ public class RealEstateRentFragment extends Fragment {
             }
         });
     }
+
 }

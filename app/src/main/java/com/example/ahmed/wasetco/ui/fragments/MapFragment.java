@@ -3,15 +3,11 @@ package com.example.ahmed.wasetco.ui.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,18 +24,16 @@ import com.example.ahmed.wasetco.R;
 import com.example.ahmed.wasetco.data.Constants;
 import com.example.ahmed.wasetco.data.models.RealEstateModel;
 import com.example.ahmed.wasetco.viewmodels.RealEstateViewModel;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
-import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
@@ -84,7 +78,7 @@ public class MapFragment extends Fragment implements ClusterManager.OnClusterCli
         super.onViewCreated(view, savedInstanceState);
 
 
-        viewModel = ViewModelProviders.of(getActivity()).get(RealEstateViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(RealEstateViewModel.class);
 
         mMapView.onCreate(savedInstanceState);
 
@@ -106,16 +100,15 @@ public class MapFragment extends Fragment implements ClusterManager.OnClusterCli
 
         mMap = googleMap;
 
+
         // Creating cluster manager object.
 
-        mClusterManager = new ClusterManager<RealEstateModel>(getActivity(), mMap);
-        mMap.setOnCameraChangeListener(mClusterManager);
-        mClusterManager.setRenderer(new CustomClusterRenderer(getActivity(), mMap,
-                mClusterManager));
 
+        mClusterManager = new ClusterManager<RealEstateModel>(getActivity(), mMap);
+        mMap.setOnCameraIdleListener(mClusterManager);
+        mClusterManager.setRenderer(new CustomClusterRenderer(getActivity(), mMap, mClusterManager));
         mMap.setOnInfoWindowClickListener(mClusterManager);
         mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
-        // mClusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForClusters());
         mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForItems());
         mMap.setOnMarkerClickListener(mClusterManager);
         mClusterManager.setOnClusterClickListener(this);
@@ -123,7 +116,7 @@ public class MapFragment extends Fragment implements ClusterManager.OnClusterCli
         mClusterManager.setOnClusterItemClickListener(this);
         mClusterManager.setOnClusterItemInfoWindowClickListener(this);
 
-        viewModel.getRealEstates().observe(getActivity(), realEstateModels -> {
+        viewModel.getRealEstates(1).observe(getActivity(), realEstateModels -> {
 
             // Adding Objects to the Cluster.
 
@@ -135,7 +128,6 @@ public class MapFragment extends Fragment implements ClusterManager.OnClusterCli
             mClusterManager.cluster();
         });
 
-        mClusterManager.cluster();
     }
 
     @Override
@@ -164,27 +156,15 @@ public class MapFragment extends Fragment implements ClusterManager.OnClusterCli
         clickedCluster = cluster;
         Toast.makeText(getActivity(), "Cluster" + cluster.getPosition().toString(), Toast.LENGTH_SHORT).show();
 
+
         // Zoom in the cluster. Need to create LatLngBounds and including all the cluster items
         // inside of bounds, then animate to center of the bounds.
 
+        LatLng latLng = new LatLng(29.5154615, 29.22222);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 6);
+        mMap.animateCamera(cameraUpdate);
         // Create the builder to collect all essential cluster items for the bounds.
-        LatLngBounds.Builder builder = LatLngBounds.builder();
-        for (ClusterItem item : cluster.getItems()) {
-            builder.include(item.getPosition());
-        }
-        // Get the LatLngBounds
-        final LatLngBounds bounds = builder.build();
 
-
-        // Animate camera to the bounds
-        try {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cluster.getPosition(), 9.5f));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 300));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), "Ex", Toast.LENGTH_SHORT).show();
-        }
         return false;
     }
 
@@ -273,10 +253,6 @@ public class MapFragment extends Fragment implements ClusterManager.OnClusterCli
         @Override
         protected void onBeforeClusterItemRendered(RealEstateModel item,
                                                    MarkerOptions markerOptions) {
-
-
-            markerOptions.icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_home_black_24dp)).snippet(item.getPropertyTitle());
-
         }
 
         @Override
@@ -284,18 +260,6 @@ public class MapFragment extends Fragment implements ClusterManager.OnClusterCli
             super.onBeforeClusterRendered(cluster, markerOptions);
 
         }
-    }
-
-    private BitmapDescriptor bitmapDescriptorFromVector(Context context, @DrawableRes int vectorDrawableResourceId) {
-        Drawable background = ContextCompat.getDrawable(context, R.drawable.ic_home_black_24dp);
-        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
-        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorDrawableResourceId);
-        vectorDrawable.setBounds(40, 20, vectorDrawable.getIntrinsicWidth() + 40, vectorDrawable.getIntrinsicHeight() + 20);
-        Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        background.draw(canvas);
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
 

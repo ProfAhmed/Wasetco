@@ -29,7 +29,7 @@ public class Repository {
         this.mContext = mContext;
     }
 
-    public LiveData<ArrayList<RealEstateModel>> getRealEstates() {
+    public LiveData<ArrayList<RealEstateModel>> getRealEstates(int page) {
         final MutableLiveData<ArrayList<RealEstateModel>> data = new MutableLiveData<>();
         mResultCallback = new IResult() {
             @Override
@@ -53,7 +53,7 @@ public class Repository {
 
         mVolleyService = new VolleyService(mResultCallback, mContext);
 
-        mVolleyService.getDataVolley(Constants.GET_CALL_JSON_OBJECT, Constants.GET_PROPERTIES);
+        mVolleyService.getDataVolley(Constants.GET_CALL_JSON_OBJECT, Constants.GET_PROPERTIES + page);
 
         return data;
     }

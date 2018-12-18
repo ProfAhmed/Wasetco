@@ -6,7 +6,7 @@ public final class Constants {
     final static public String GET_CALL_JSON_OBJECT = "GET_CALL";
     final static public String GET_CALL_JSON_ARRAY = "GET_CALL_ARRAY";
 
-    public static final String GET_PROPERTIES = "http://demo.wasetco.com/api/properties";
+    public static final String GET_PROPERTIES = "http://demo.wasetco.com/api/properties?page=";
     public static final String GET_FEATURED = "http://demo.wasetco.com/api/featured";
     public static final String IMAGE_URL = "http://demo.wasetco.com/upload/properties/";
     public static final String IMAGE_URL_MEMBERS = "http://demo.wasetco.com/upload/members/";

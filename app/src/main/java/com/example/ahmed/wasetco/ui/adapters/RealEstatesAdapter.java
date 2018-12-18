@@ -66,7 +66,7 @@ public class RealEstatesAdapter extends RecyclerView.Adapter<RealEstatesAdapter.
 
     public void setRealEstates(List<RealEstateModel> realEstates) {
         this.realEstates = realEstates;
-        notifyDataSetChanged();
+
     }
 
 
