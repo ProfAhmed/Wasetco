@@ -7,5 +7,7 @@
     <color name="toolbar">#005588</color>
     <color name="buttonDetails">#005588</color>
     <color name="agentName">#2e2f30</color>
+    <color name="tabsColor">#dad9d9</color>
+    <color name="colorSelector">#bd2379ac</color>
 
 </resources>

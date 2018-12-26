@@ -33,7 +33,7 @@ public class RealStateFeaturedAdapter extends RecyclerView.Adapter<RealStateFeat
     @NonNull
     @Override
     public RealEstatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_realestates_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_custom_realestates_list, parent, false);
         RealEstatViewHolder viewHolder = new RealEstatViewHolder(view);
         return viewHolder;
     }

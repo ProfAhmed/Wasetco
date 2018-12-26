@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,9 @@ public class AgentDetailsActivity extends AppCompatActivity {
     @BindView(R.id.btnBack)
     ImageButton btnBack;
 
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+
     AgentRealEstatesViewModel viewModel;
 
     @Override
@@ -80,6 +84,7 @@ public class AgentDetailsActivity extends AppCompatActivity {
         viewModel.getAgentRealEstates().observe(this, new Observer<ArrayList<RealEstateFeaturedModel>>() {
             @Override
             public void onChanged(@Nullable ArrayList<RealEstateFeaturedModel> realEstateModels) {
+                progressBar.setVisibility(View.GONE);
                 adapter.setRealEstatesFeatred(realEstateModels);
             }
         });

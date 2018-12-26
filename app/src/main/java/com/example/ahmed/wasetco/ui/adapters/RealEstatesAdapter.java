@@ -33,7 +33,7 @@ public class RealEstatesAdapter extends RecyclerView.Adapter<RealEstatesAdapter.
     @NonNull
     @Override
     public RealEstatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_realestates_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_custom_realestates_list, parent, false);
         RealEstatViewHolder viewHolder = new RealEstatViewHolder(view);
         return viewHolder;
     }
@@ -51,7 +51,7 @@ public class RealEstatesAdapter extends RecyclerView.Adapter<RealEstatesAdapter.
             holder.tvBedroom.setText(model.getBedrooms());
             holder.tvLandArea.setText(model.getLandArea());
             holder.tvPrice.setText("LE " + model.getPrice());
-            Glide.with(mContext).load(Constants.IMAGE_URL + model.getFeaturedImage() + "-s.jpg").into(holder.ivRealEstate);
+            Glide.with(mContext).load(Constants.IMAGE_URL + model.getFeaturedImage() + "-b.jpg").into(holder.ivRealEstate);
         }
     }
 

@@ -7,4 +7,14 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="et_padding_top">@dimen/_7sdp</dimen>
+    <dimen name="et_padding_bottom">@dimen/_10sdp</dimen>
+    <dimen name="et_padding_start">@dimen/_20sdp</dimen>
+    <dimen name="et_padding_end">@dimen/_20sdp</dimen>
+    <dimen name="text_size">@dimen/_10sdp</dimen>
+    <dimen name="sp_margin_top">@dimen/_16sdp</dimen>
+    <dimen name="icon_width">@dimen/_150sdp</dimen>
+    <dimen name="icon_height">@dimen/_150sdp</dimen>
+
+
 </resources>

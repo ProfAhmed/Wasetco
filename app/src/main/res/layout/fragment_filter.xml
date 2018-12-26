@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.FilterActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/etNameFlat"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_36sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/sp_background"
+                    android:ems="10"
+                    android:hint="Address..."
+                    android:inputType="textPostalAddress"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_8sdp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_36sdp"
+                    android:layout_marginTop="@dimen/sp_margin_top"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/etFromPrice"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_36sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/sp_background"
+                        android:ems="10"
+                        android:hint="@string/from"
+                        android:inputType="number"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingEnd="@dimen/_8sdp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:text="@string/to"
+                        android:textColor="#000" />
+
+                    <EditText
+                        android:id="@+id/etToPrice"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_36sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/sp_background"
+                        android:ems="10"
+                        android:hint="@string/toPrice"
+                        android:inputType="number"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingEnd="@dimen/_8sdp" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlGovernment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sp_margin_top"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight=".28"
+                    android:background="@drawable/sp_background"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spGovernment"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_36sdp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/et_padding_start"
+                        android:paddingTop="@dimen/et_padding_top"
+                        android:paddingEnd="@dimen/et_padding_end"
+                        android:paddingBottom="@dimen/et_padding_bottom"
+                        android:textSize="@dimen/text_size" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_arrow_drop_down_black_24dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sp_margin_top"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight=".28"
+                    android:background="@drawable/sp_background"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <Spinner
+                        android:id="@+id/spCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_36sdp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/et_padding_start"
+                        android:paddingTop="@dimen/et_padding_top"
+                        android:paddingEnd="@dimen/et_padding_end"
+                        android:paddingBottom="@dimen/et_padding_bottom"
+                        android:textSize="@dimen/text_size" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_arrow_drop_down_black_24dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlPropertyName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sp_margin_top"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight=".28"
+                    android:background="@drawable/sp_background"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spRealStateType"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_36sdp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/et_padding_start"
+                        android:paddingTop="@dimen/et_padding_top"
+                        android:paddingEnd="@dimen/et_padding_end"
+                        android:paddingBottom="@dimen/et_padding_bottom"
+                        android:textSize="@dimen/text_size" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_arrow_drop_down_black_24dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlFinish"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sp_margin_top"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight=".28"
+                    android:background="@drawable/sp_background"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <Spinner
+                        android:id="@+id/spFinishingType"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_36sdp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/et_padding_start"
+                        android:paddingTop="@dimen/et_padding_top"
+                        android:paddingEnd="@dimen/et_padding_end"
+                        android:paddingBottom="@dimen/et_padding_bottom"
+                        android:textSize="@dimen/text_size" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_arrow_drop_down_black_24dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sp_margin_top"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight=".28"
+                    android:background="@drawable/sp_background"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spLivingType"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_36sdp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/et_padding_start"
+                        android:paddingTop="@dimen/et_padding_top"
+                        android:paddingEnd="@dimen/et_padding_end"
+                        android:paddingBottom="@dimen/et_padding_bottom"
+                        android:textSize="@dimen/text_size" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_arrow_drop_down_black_24dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlPayment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sp_margin_top"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight=".28"
+                    android:background="@drawable/sp_background"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <Spinner
+                        android:id="@+id/spPaymentType"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_36sdp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/et_padding_start"
+                        android:paddingTop="@dimen/et_padding_top"
+                        android:paddingEnd="@dimen/et_padding_end"
+                        android:paddingBottom="@dimen/et_padding_bottom"
+                        android:textSize="@dimen/text_size" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_arrow_drop_down_black_24dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlInstallment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sp_margin_top"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight=".28"
+                    android:background="@drawable/sp_background"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <Spinner
+                        android:id="@+id/spPremier"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_36sdp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/et_padding_start"
+                        android:paddingTop="@dimen/et_padding_top"
+                        android:paddingEnd="@dimen/et_padding_end"
+                        android:paddingBottom="@dimen/et_padding_bottom"
+                        android:textSize="@dimen/text_size" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_arrow_drop_down_black_24dp" />
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/btnSearch"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="@dimen/_36sdp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/sp_margin_top"
+                    android:layout_marginBottom="0dp"
+                    android:background="@drawable/bc_button_search"
+                    android:text="@string/action_search"
+                    android:textAllCaps="false"
+                    android:textColor="#FFF" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+
+</RelativeLayout>

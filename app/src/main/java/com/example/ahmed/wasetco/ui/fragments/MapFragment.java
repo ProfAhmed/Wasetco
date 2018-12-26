@@ -3,11 +3,15 @@ package com.example.ahmed.wasetco.ui.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,19 +28,21 @@ import com.example.ahmed.wasetco.R;
 import com.example.ahmed.wasetco.data.Constants;
 import com.example.ahmed.wasetco.data.models.RealEstateModel;
 import com.example.ahmed.wasetco.viewmodels.RealEstateViewModel;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.ExecutionException;
 
@@ -100,34 +106,27 @@ public class MapFragment extends Fragment implements ClusterManager.OnClusterCli
 
         mMap = googleMap;
 
-
         // Creating cluster manager object.
 
-
         mClusterManager = new ClusterManager<RealEstateModel>(getActivity(), mMap);
-        mMap.setOnCameraIdleListener(mClusterManager);
         mClusterManager.setRenderer(new CustomClusterRenderer(getActivity(), mMap, mClusterManager));
+        mMap.setOnCameraIdleListener(mClusterManager);
         mMap.setOnInfoWindowClickListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
         mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
         mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForItems());
-        mMap.setOnMarkerClickListener(mClusterManager);
         mClusterManager.setOnClusterClickListener(this);
         mClusterManager.setOnClusterInfoWindowClickListener(this);
         mClusterManager.setOnClusterItemClickListener(this);
         mClusterManager.setOnClusterItemInfoWindowClickListener(this);
 
         viewModel.getRealEstates(1).observe(getActivity(), realEstateModels -> {
-
             // Adding Objects to the Cluster.
-
             for (int i = 0; i < realEstateModels.size(); i++) {
-
                 mClusterManager.addItem(realEstateModels.get(i));
             }
-
             mClusterManager.cluster();
         });
-
     }
 
     @Override
@@ -156,16 +155,23 @@ public class MapFragment extends Fragment implements ClusterManager.OnClusterCli
         clickedCluster = cluster;
         Toast.makeText(getActivity(), "Cluster" + cluster.getPosition().toString(), Toast.LENGTH_SHORT).show();
 
-
-        // Zoom in the cluster. Need to create LatLngBounds and including all the cluster items
-        // inside of bounds, then animate to center of the bounds.
-
-        LatLng latLng = new LatLng(29.5154615, 29.22222);
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 6);
-        mMap.animateCamera(cameraUpdate);
         // Create the builder to collect all essential cluster items for the bounds.
+        LatLngBounds.Builder builder = LatLngBounds.builder();
+        for (ClusterItem item : cluster.getItems()) {
+            builder.include(item.getPosition());
+        }
 
-        return false;
+        // Get the LatLngBounds
+        final LatLngBounds bounds = builder.build();
+
+        // Animate camera to the bounds
+        try {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 
 
@@ -193,6 +199,11 @@ public class MapFragment extends Fragment implements ClusterManager.OnClusterCli
         @BindView(R.id.iBtnCloseWindow)
         ImageButton iBtnClose;
 
+        private int iconWidth = -1;
+        private int iconHeight = -1;
+        private Marker lastMarker = null;
+
+
         private final View myContentsView;
 
 
@@ -200,8 +211,12 @@ public class MapFragment extends Fragment implements ClusterManager.OnClusterCli
             myContentsView = getLayoutInflater().inflate(
                     R.layout.realestate_info_window, null);
 
-
             ButterKnife.bind(this, myContentsView);
+
+            iconWidth =
+                    getActivity().getResources().getDimensionPixelSize(R.dimen.icon_width);
+            iconHeight =
+                    getActivity().getResources().getDimensionPixelSize(R.dimen.icon_height);
         }
 
         @Override
@@ -213,28 +228,29 @@ public class MapFragment extends Fragment implements ClusterManager.OnClusterCli
         public View getInfoWindow(Marker marker) {
 
             if (clickedClusterItem != null) {
-
                 tvTitle.setText(clickedClusterItem.getPropertyTitle());
                 tvAddress.setText(clickedClusterItem.getAddress());
                 tvBathroom.setText(clickedClusterItem.getBathrooms());
                 tvBedroom.setText(clickedClusterItem.getBedrooms());
-                new DownloadMarkerTask(getActivity(), ivRealEstate).execute();
+                // new DownloadMarkerTask(getActivity(), ivRealEstate).execute();
+//                Glide.with(getActivity()).asBitmap()
+//                        .load(Constants.IMAGE_URL + clickedClusterItem.getFeaturedImage() + "-b.jpg")
+//                        .into(ivRealEstate);
+                //  Picasso.get().load(Constants.IMAGE_URL + clickedClusterItem.getFeaturedImage() + "-b.jpg").into(ivRealEstate);
+                if (lastMarker == null
+                        || !lastMarker.getId().equals(marker.getId())) {
+                    lastMarker = marker;
 
-                btnMoreInfo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(getActivity(), "btnMoreInfo", Toast.LENGTH_SHORT).show();
+
+                    if (clickedClusterItem.getFeaturedImage() == null) {
+                        ivRealEstate.setVisibility(View.GONE);
+                    } else {
+                        Picasso.get().load(Constants.IMAGE_URL + clickedClusterItem.getFeaturedImage() + "-b.jpg").resize(iconWidth, iconHeight)
+                                .centerCrop().noFade()
+                                .placeholder(R.drawable.no_image)
+                                .into(ivRealEstate, new MarkerCallback(marker));
                     }
-                });
-
-                iBtnClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        marker.hideInfoWindow();
-                        Toast.makeText(getActivity(), "btnMoreInfo", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+                }
             }
             return myContentsView;
         }
@@ -253,12 +269,24 @@ public class MapFragment extends Fragment implements ClusterManager.OnClusterCli
         @Override
         protected void onBeforeClusterItemRendered(RealEstateModel item,
                                                    MarkerOptions markerOptions) {
+
+            /*if (getContext() != null) {
+                Drawable drawable = getResources().getDrawable(R.drawable.ic_home_black_24dp);
+                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(drawableToBitmap(drawable)));
+            }*/
+
         }
 
         @Override
         protected void onBeforeClusterRendered(Cluster<RealEstateModel> cluster, MarkerOptions markerOptions) {
             super.onBeforeClusterRendered(cluster, markerOptions);
 
+        }
+
+        @Override
+        protected boolean shouldRenderAsCluster(Cluster cluster) {
+            // Always render clusters.
+            return cluster.getSize() > 1;
         }
     }
 
@@ -277,12 +305,12 @@ public class MapFragment extends Fragment implements ClusterManager.OnClusterCli
         protected Bitmap doInBackground(Bitmap... imageBitmaps) {
             Bitmap image = null;
             try {
-                image = Glide.with(getActivity()).asBitmap()
-                        .load(Constants.IMAGE_URL + clickedClusterItem.getFeaturedImage() + "-b.jpg")
-                        .apply(new RequestOptions()
-                                .diskCacheStrategy(DiskCacheStrategy.ALL))
-                        .submit(250, 250)
-                        .get();
+                image =
+                        Glide.with(mContext).asBitmap()
+                                .load(Constants.IMAGE_URL + clickedClusterItem.getFeaturedImage() + "-b.jpg")
+                                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+                                .submit(250, 250)
+                                .get();
 
 
             } catch (ExecutionException e) {
@@ -296,9 +324,58 @@ public class MapFragment extends Fragment implements ClusterManager.OnClusterCli
         @Override
         protected void onPostExecute(Bitmap image) {
             super.onPostExecute(image);
+            if (image == null) {
+                Log.v("BitMapImage", "Null");
+
+            }
+            Log.v("BitMapImage", String.valueOf(image.getByteCount()));
             ivRealEstate.setImageBitmap(image);
         }
     }
+
+
+    static class MarkerCallback implements Callback {
+        Marker marker = null;
+
+        MarkerCallback(Marker marker) {
+            this.marker = marker;
+        }
+
+        @Override
+        public void onSuccess() {
+            if (marker != null && marker.isInfoWindowShown()) {
+                marker.showInfoWindow();
+            }
+        }
+
+        @Override
+        public void onError(Exception e) {
+
+        }
+    }
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap = null;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
 
     @Override
     public void onResume() {

@@ -19,10 +19,10 @@ public class AgentViewModel extends AndroidViewModel {
 
         repository = new Repository(application);
 
-        agentLiveData = repository.getAgents();
     }
 
-    public LiveData<ArrayList<AgentModel>> getAgent() {
+    public LiveData<ArrayList<AgentModel>> getAgent(int page) {
+        agentLiveData = repository.getAgents(page);
         return agentLiveData;
     }
 }

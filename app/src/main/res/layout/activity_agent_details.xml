@@ -17,7 +17,7 @@
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="?attr/actionBarSize"
                 android:background="#50aee6">
 
                 <ImageButton
@@ -229,6 +229,16 @@
                      items that is outside of device viewport when it loads initially.
                      Wrapping "RecyclerView" with "RelativeLayout" fixes the issue on Marshmallow devices.
                 -->
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:visibility="visible" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvAgentsRealestates"
                     android:layout_width="match_parent"
@@ -236,6 +246,7 @@
                     tools:listitem="@layout/custom_realestates_list">
 
                 </android.support.v7.widget.RecyclerView>
+
 
             </RelativeLayout>
 

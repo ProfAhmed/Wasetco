@@ -7,31 +7,32 @@
         <item
             android:id="@+id/menu_home"
             android:icon="@drawable/ic_home_black_24dp"
-            android:title="Home" />
+            android:title="@string/real_estates" />
+
         <item
-            android:id="@+id/menu_filter"
-            android:icon="@drawable/ic_filter_list_black_24dp"
-            android:title="Filter" />
+            android:id="@+id/menu_featured"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/featured" />
 
         <item
             android:id="@+id/menu_forSale"
             android:icon="@android:drawable/radiobutton_on_background"
-            android:title="For Buy" />
+            android:title="@string/sale" />
 
         <item
             android:id="@+id/menu_ForRent"
             android:icon="@android:drawable/radiobutton_on_background"
-            android:title="For Rent" />
+            android:title="@string/rent" />
 
         <item
             android:id="@+id/menu_agents"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Agents" />
+            android:title="@string/agents" />
 
         <item
             android:id="@+id/menu_myAccount"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="My Account" />
+            android:title="@string/my_account" />
 
     </group>
 

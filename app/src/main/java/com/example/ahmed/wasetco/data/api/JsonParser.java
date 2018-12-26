@@ -4,6 +4,10 @@ import com.example.ahmed.wasetco.data.models.AgentModel;
 import com.example.ahmed.wasetco.data.models.RealEstateFeaturedModel;
 import com.example.ahmed.wasetco.data.models.RealEstateModel;
 import com.example.ahmed.wasetco.data.models.RealEstateSaleModel;
+import com.example.ahmed.wasetco.data.models.filter_models.CityFilterModel;
+import com.example.ahmed.wasetco.data.models.filter_models.FinishingTypeFilterModel;
+import com.example.ahmed.wasetco.data.models.filter_models.GovernmentFilterModel;
+import com.example.ahmed.wasetco.data.models.filter_models.PropertyNameFilterModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -140,5 +144,69 @@ public class JsonParser {
             }
         }
         return agentRealEstate;
+    }
+
+    static public ArrayList<GovernmentFilterModel> parseGovernmentsFilter(JSONArray jsonArray) {
+        ArrayList<GovernmentFilterModel> governmentFilterModels = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                JSONObject currentObject = jsonArray.getJSONObject(i);
+                String title = currentObject.getString("title");
+                String id = currentObject.getString("id");
+                GovernmentFilterModel governmentFilterModel = new GovernmentFilterModel(title, id);
+                governmentFilterModels.add(governmentFilterModel);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return governmentFilterModels;
+    }
+
+    static public ArrayList<CityFilterModel> parseCitiesFilter(JSONArray jsonArray) {
+        ArrayList<CityFilterModel> cityFilterModels = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                JSONObject currentObject = jsonArray.getJSONObject(i);
+                String title = currentObject.getString("title");
+                String id = currentObject.getString("id");
+                CityFilterModel cityFilterModel = new CityFilterModel(title, id);
+                cityFilterModels.add(cityFilterModel);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return cityFilterModels;
+    }
+
+    static public ArrayList<PropertyNameFilterModel> parsePropertyNameFilter(JSONArray jsonArray) {
+        ArrayList<PropertyNameFilterModel> propertyNameFilterModels = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                JSONObject currentObject = jsonArray.getJSONObject(i);
+                String title = currentObject.getString("title");
+                String id = currentObject.getString("id");
+                PropertyNameFilterModel propertyNameFilterModel = new PropertyNameFilterModel(title, id);
+                propertyNameFilterModels.add(propertyNameFilterModel);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return propertyNameFilterModels;
+    }
+
+    static public ArrayList<FinishingTypeFilterModel> parseFinishesFilter(JSONArray jsonArray) {
+        ArrayList<FinishingTypeFilterModel> finishingTypeFilterModels = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                JSONObject currentObject = jsonArray.getJSONObject(i);
+                String title = currentObject.getString("title");
+                String id = currentObject.getString("id");
+                FinishingTypeFilterModel finishingTypeFilterModel = new FinishingTypeFilterModel(title, id);
+                finishingTypeFilterModels.add(finishingTypeFilterModel);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return finishingTypeFilterModels;
     }
 }

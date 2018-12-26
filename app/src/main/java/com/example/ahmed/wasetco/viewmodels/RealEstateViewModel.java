@@ -14,11 +14,13 @@ import java.util.ArrayList;
 public class RealEstateViewModel extends AndroidViewModel {
     private Repository repository;
     private MutableLiveData<Integer> page = new MutableLiveData<>();
+    private LiveData<ArrayList<RealEstateModel>> realEstateData;
 
     public RealEstateViewModel(@NonNull Application application) {
         super(application);
 
         repository = new Repository(application);
+
     }
 
     public LiveData<ArrayList<RealEstateModel>> getRealEstates(int offset) {

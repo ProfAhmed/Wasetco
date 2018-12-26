@@ -18,10 +18,15 @@ public class RealEstateFeaturedViewModel extends AndroidViewModel {
         super(application);
 
         repository = new Repository(application);
-        realEstatLiveData = repository.getFeaturedRealEstates();
     }
 
-    public LiveData<ArrayList<RealEstateFeaturedModel>> getFeaturedRealEstates() {
+    public LiveData<ArrayList<RealEstateFeaturedModel>> getFeaturedRealEstates(int page) {
+        realEstatLiveData = repository.getFeaturedRealEstates(page);
+        return realEstatLiveData;
+    }
+
+    public LiveData<ArrayList<RealEstateFeaturedModel>> getFilter(String url) {
+        realEstatLiveData = repository.getFilter(url);
         return realEstatLiveData;
     }
 

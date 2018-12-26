@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.ahmed.wasetco.R;
@@ -50,7 +49,6 @@ public class AgentsAdapter extends RecyclerView.Adapter<AgentsAdapter.AgentViewH
             holder.tvAgentName.setText(model.getName());
 
             if (!model.getImageIcon().equals("null")) {
-                Toast.makeText(mContext, model.getImageIcon(), Toast.LENGTH_SHORT).show();
                 Glide.with(mContext).load(Constants.IMAGE_URL_MEMBERS + model.getImageIcon() + "-s.jpg").into(holder.ivAgent);
             }
 

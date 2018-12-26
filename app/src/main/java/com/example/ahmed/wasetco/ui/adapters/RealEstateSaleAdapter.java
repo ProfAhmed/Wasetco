@@ -33,7 +33,7 @@ public class RealEstateSaleAdapter extends RecyclerView.Adapter<RealEstateSaleAd
     @NonNull
     @Override
     public SaleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_realestates_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_custom_realestates_list, parent, false);
         SaleViewHolder viewHolder = new SaleViewHolder(view);
         return viewHolder;
     }
