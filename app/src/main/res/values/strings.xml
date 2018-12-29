@@ -18,7 +18,7 @@
     <string name="agent_details">Agent Details</string>
     <string name="agent_realestate">Agent\'s RealEstate</string>
     <string name="bed_room">Bedroom</string>
-    <string name="more_info">More Info</string>
+    <string name="more_info" translatable="false">More Info</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="action_search">Search</string>
     <string name="action_map">Map</string>
@@ -53,4 +53,22 @@
     <string name="paymentType">Payment Type</string>
     <string name="premier">Premiers</string>
     <string name="result">Result</string>
+    <string name="communicate">Communicate</string>
+    <string name="say_about_us">Say About Us</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="about">About</string>
+    <string name="photos">Photos</string>
+    <string name="address">Address...</string>
+    <string name="igar">Rent</string>
+    <string name="tamlik">OwnerShip</string>
+    <string name="mosharkah">Sharing</string>
+    <string name="rent_old">Old Rent</string>
+    <string name="rent_new">New Rent</string>
+    <string name="rent_day">Rent per day</string>
+    <string name="taqset">Installment</string>
+    <string name="cash">Cash</string>
+    <string name="one_year">One Year</string>
+    <string name="tow_year">2 Years</string>
+    <string name="three_year">3 Years</string>
+    <string name="four_year">4 Years</string>
 </resources>

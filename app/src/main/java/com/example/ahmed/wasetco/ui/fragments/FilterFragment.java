@@ -239,9 +239,9 @@ public class FilterFragment extends Fragment implements View.OnClickListener, Vi
     }
 
     private void fillLists() {
-        PurposeFilterModel purposeFilterModel1 = new PurposeFilterModel("Rent", "1");
-        PurposeFilterModel purposeFilterModel2 = new PurposeFilterModel("Ownership", "2");
-        PurposeFilterModel purposeFilterModel3 = new PurposeFilterModel("Sharing", "3");
+        PurposeFilterModel purposeFilterModel1 = new PurposeFilterModel(getString(R.string.igar), "1");
+        PurposeFilterModel purposeFilterModel2 = new PurposeFilterModel(getString(R.string.tamlik), "2");
+        PurposeFilterModel purposeFilterModel3 = new PurposeFilterModel(getString(R.string.mosharkah), "3");
         purposeList.add(purposeFilterModel1);
         purposeList.add(purposeFilterModel2);
         purposeList.add(purposeFilterModel3);
@@ -282,48 +282,48 @@ public class FilterFragment extends Fragment implements View.OnClickListener, Vi
                 PurposeFilterModel model = (PurposeFilterModel) parent.getItemAtPosition(position);
                 String paymentTypeDefault = getResources().getString(R.string.paymentType);
                 purpose = model.getName();
-                if (purpose.equals("Rent")) {
+                if (purpose.equals(getString(R.string.igar))) {
                     rlPayment.setVisibility(View.VISIBLE);
                     spPaymentType.setSelection(0);
                     rlInstallment.setVisibility(View.GONE);
                     paymentTypeList.clear();
                     paymentTypeFilterModel = new PaymentTypeFilterModel(paymentTypeDefault, "");
-                    PaymentTypeFilterModel model1 = new PaymentTypeFilterModel("Old", "1");
-                    PaymentTypeFilterModel model2 = new PaymentTypeFilterModel("New", "2");
-                    PaymentTypeFilterModel model3 = new PaymentTypeFilterModel("Daily", "3");
+                    PaymentTypeFilterModel model1 = new PaymentTypeFilterModel(getString(R.string.rent_old), "1");
+                    PaymentTypeFilterModel model2 = new PaymentTypeFilterModel(getString(R.string.rent_new), "2");
+                    PaymentTypeFilterModel model3 = new PaymentTypeFilterModel(getString(R.string.rent_day), "3");
                     paymentTypeList.add(paymentTypeFilterModel);
                     paymentTypeList.add(model1);
                     paymentTypeList.add(model2);
                     paymentTypeList.add(model3);
-                } else if (purpose.equals("Ownership")) {
+                } else if (purpose.equals(getString(R.string.tamlik))) {
                     rlPayment.setVisibility(View.VISIBLE);
                     spPaymentType.setSelection(0);
                     rlInstallment.setVisibility(View.GONE);
                     paymentTypeList.clear();
                     paymentTypeList.add(paymentTypeFilterModel);
                     paymentTypeFilterModel = new PaymentTypeFilterModel(paymentTypeDefault, "");
-                    PaymentTypeFilterModel model1 = new PaymentTypeFilterModel("Taqset", "1");
-                    PaymentTypeFilterModel model2 = new PaymentTypeFilterModel("Cash", "2");
+                    PaymentTypeFilterModel model1 = new PaymentTypeFilterModel(getString(R.string.taqset), "1");
+                    PaymentTypeFilterModel model2 = new PaymentTypeFilterModel(getString(R.string.cash), "2");
                     paymentTypeList.add(model1);
                     paymentTypeList.add(model2);
                 } else {
                     rlPayment.setVisibility(View.GONE);
-                    rlPayment.setVisibility(View.GONE);
+                    rlInstallment.setVisibility(View.GONE);
                 }
                 Toast.makeText(getActivity(), purpose, Toast.LENGTH_SHORT).show();
             }
             if (parent.getItemAtPosition(position) instanceof PaymentTypeFilterModel) {
                 PaymentTypeFilterModel model = (PaymentTypeFilterModel) parent.getItemAtPosition(position);
                 type = model.getName();
-                if (type.equals("Taqset")) {
+                if (type.equals(getString(R.string.taqset))) {
                     rlInstallment.setVisibility(View.VISIBLE);
                     spProperty_installment_id.setSelection(0);
                     String propertyInstallmentDefault = getResources().getString(R.string.premier);
                     propertyInstallmentFilterModel = new PropertyInstallmentFilterModel(propertyInstallmentDefault, "");
-                    PropertyInstallmentFilterModel model1 = new PropertyInstallmentFilterModel("One", "1");
-                    PropertyInstallmentFilterModel model2 = new PropertyInstallmentFilterModel("Tow", "2");
-                    PropertyInstallmentFilterModel model3 = new PropertyInstallmentFilterModel("Three", "3");
-                    PropertyInstallmentFilterModel model4 = new PropertyInstallmentFilterModel("Four", "4");
+                    PropertyInstallmentFilterModel model1 = new PropertyInstallmentFilterModel(getString(R.string.one_year), "1");
+                    PropertyInstallmentFilterModel model2 = new PropertyInstallmentFilterModel(getString(R.string.tow_year), "2");
+                    PropertyInstallmentFilterModel model3 = new PropertyInstallmentFilterModel(getString(R.string.three_year), "3");
+                    PropertyInstallmentFilterModel model4 = new PropertyInstallmentFilterModel(getString(R.string.four_year), "4");
                     propertyInstallmentList.add(model1);
                     propertyInstallmentList.add(model2);
                     propertyInstallmentList.add(model3);

@@ -6,6 +6,7 @@ import com.example.ahmed.wasetco.data.models.RealEstateModel;
 import com.example.ahmed.wasetco.data.models.RealEstateSaleModel;
 import com.example.ahmed.wasetco.data.models.filter_models.CityFilterModel;
 import com.example.ahmed.wasetco.data.models.filter_models.FinishingTypeFilterModel;
+import com.example.ahmed.wasetco.data.models.filter_models.GovernTestModel;
 import com.example.ahmed.wasetco.data.models.filter_models.GovernmentFilterModel;
 import com.example.ahmed.wasetco.data.models.filter_models.PropertyNameFilterModel;
 
@@ -208,5 +209,32 @@ public class JsonParser {
             }
         }
         return finishingTypeFilterModels;
+    }
+
+    static public GovernTestModel parseTestGovernmentFilter(JSONObject jsonObject) {
+        ArrayList<CityFilterModel> governTestModelsList = new ArrayList<>();
+        GovernTestModel governTestModel = null;
+        try {
+            JSONObject jsonObject1 = jsonObject.getJSONObject("government");
+            String title = jsonObject1.getString("title");
+            String id = jsonObject1.getString("id");
+            JSONArray jsonArray = jsonObject1.getJSONArray("cities");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                try {
+                    JSONObject currentObject = jsonArray.getJSONObject(i);
+                    String titleCity = currentObject.getString("title");
+                    String idCity = jsonObject1.getString("id");
+                    CityFilterModel cityFilterModel = new CityFilterModel(titleCity, idCity);
+                    governTestModelsList.add(cityFilterModel);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            governTestModel = new GovernTestModel(title, id, governTestModelsList);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return governTestModel;
     }
 }

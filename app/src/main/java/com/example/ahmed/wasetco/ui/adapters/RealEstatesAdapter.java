@@ -2,7 +2,9 @@ package com.example.ahmed.wasetco.ui.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ public class RealEstatesAdapter extends RecyclerView.Adapter<RealEstatesAdapter.
 
     List<RealEstateModel> realEstates;
     Context mContext;
+    int count = 0;
 
     public RealEstatesAdapter(Context context) {
         mContext = context;
@@ -41,6 +44,11 @@ public class RealEstatesAdapter extends RecyclerView.Adapter<RealEstatesAdapter.
     @Override
     public void onBindViewHolder(@NonNull RealEstatViewHolder holder, int position) {
 
+        int viewType = getItemViewType(position);
+        if (viewType == 1) {
+            holder.ivAds.setVisibility(View.VISIBLE);
+            Log.v("CountP", String.valueOf(position));
+        }
 
         if (realEstates != null) {
             RealEstateModel model = realEstates.get(position);
@@ -56,6 +64,14 @@ public class RealEstatesAdapter extends RecyclerView.Adapter<RealEstatesAdapter.
     }
 
     @Override
+    public int getItemViewType(int position) {
+        if ((position) % 5 == 0 && position > 4) {
+            return 1;
+        }
+        return super.getItemViewType(position);
+    }
+
+    @Override
     public int getItemCount() {
         if (realEstates != null) {
             return realEstates.size();
@@ -68,7 +84,6 @@ public class RealEstatesAdapter extends RecyclerView.Adapter<RealEstatesAdapter.
         this.realEstates = realEstates;
 
     }
-
 
     public class RealEstatViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.ivRealEstat)
@@ -93,13 +108,18 @@ public class RealEstatesAdapter extends RecyclerView.Adapter<RealEstatesAdapter.
         TextView tvPrice;
         @BindView(R.id.tvBathroom)
         TextView tvBathroom;
+        @BindView(R.id.ivAds)
+        ImageView ivAds;
+        @BindView(R.id.cv)
+        CardView cv;
 
         public RealEstatViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            itemView.setOnClickListener(view -> {
+            cv.setOnClickListener(view -> {
                 int position = getAdapterPosition();
+                Log.v("Listener", "Heyyy");
                 if (listener != null && position != RecyclerView.NO_POSITION) {
                     listener.onItemClick(realEstates.get(position));
                 }

@@ -17,6 +17,7 @@ public final class Constants {
     public static final Object GET_FILTER = "\"http://demo.wasetco.com/api/searchproperties?";
     public static final String GET_ALL_GOVERNMENTS_FILTER = "http://demo.wasetco.com/api/governments";
     public static final String GET_ALL_CITIES_FILTER = "http://demo.wasetco.com/api/governments/";
+    public static final String GET_ALL_GOVERNMENTS_TEST_FILTER = "http://demo.wasetco.com/api/governments/";
     public static final String GET_ALL_PROPERTY_NAMES_FILTER = "http://demo.wasetco.com/api/names";
     public static final String GET_ALL_FINISHES_FILTER = "http://demo.wasetco.com/api/finishes";
 

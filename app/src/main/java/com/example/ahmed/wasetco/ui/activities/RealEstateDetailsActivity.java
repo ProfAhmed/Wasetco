@@ -45,8 +45,8 @@ public class RealEstateDetailsActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new PhotosFragment(), "photos");
-        adapter.addFragment(new DetailsFragment(), "details");
+        adapter.addFragment(new PhotosFragment(), getString(R.string.photos));
+        adapter.addFragment(new DetailsFragment(), getString(R.string.details));
         viewPager.setAdapter(adapter);
     }
 

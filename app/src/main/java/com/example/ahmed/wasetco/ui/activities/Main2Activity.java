@@ -1,8 +1,11 @@
 package com.example.ahmed.wasetco.ui.activities;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,12 +25,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ahmed.wasetco.R;
+import com.example.ahmed.wasetco.data.models.filter_models.CityFilterModel;
+import com.example.ahmed.wasetco.data.models.filter_models.GovernmentFilterModel;
 import com.example.ahmed.wasetco.ui.fragments.AgentsFragment;
 import com.example.ahmed.wasetco.ui.fragments.FeaturedFragment;
 import com.example.ahmed.wasetco.ui.fragments.MapFragment;
 import com.example.ahmed.wasetco.ui.fragments.RealEstateRentFragment;
 import com.example.ahmed.wasetco.ui.fragments.RealEstateSaleFragment;
 import com.example.ahmed.wasetco.ui.fragments.RealEstatesFragment;
+import com.example.ahmed.wasetco.viewmodels.FilterDataViewModel;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,15 +58,25 @@ public class Main2Activity extends AppCompatActivity
 
     Toolbar toolbar;
 
+    FilterDataViewModel filterViewModel;
+    ArrayList<GovernmentFilterModel> governmentFilterList;
+    ArrayList<CityFilterModel> cityFilterModelArrayList;
+
+    private String governmentModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
         ButterKnife.bind(this);
+        filterViewModel = ViewModelProviders.of(this).get(FilterDataViewModel.class);
+        governmentFilterList = new ArrayList<>();
+        cityFilterModelArrayList = new ArrayList<>();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.real_estates));
         setSupportActionBar(toolbar);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -75,38 +94,62 @@ public class Main2Activity extends AppCompatActivity
         tvSaleTab.setOnClickListener(this::onClick);
         btnGovernment.setOnClickListener(this::onClick);
         btnCity.setOnClickListener(this::onClick);
-
-
+        getGovernments();
         // create the fragment and data the first time
         if (dataFragment == null) {
             fragmentShow(MapFragment.class, "map");
+            toolbar.setTitle(R.string.action_map);
         }
+    }
+
+    void getGovernments() {
+        filterViewModel.getGovernmentsLiveData().observe(this, new Observer<ArrayList<GovernmentFilterModel>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<GovernmentFilterModel> governmentFilterModels) {
+                governmentFilterList.addAll(governmentFilterModels);
+            }
+        });
+    }
+
+    void getCities(String id) {
+        filterViewModel.getCitiesLiveData(id).observe(this, cityFilterModels -> {
+            cityFilterModelArrayList.clear();
+            cityFilterModelArrayList.addAll(cityFilterModels);
+        });
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        String[] governments = {"Cairo", "Alex", "Gisa", "Cairo", "Alex", "Gisa", "Cairo", "Alex", "Gisa", "Cairo", "Alex", "Gisa"
-                , "Cairo", "Alex", "Gisa", "Cairo", "Alex", "Gisa", "Cairo", "Alex", "Gisa", "Cairo", "Alex", "Gisa", "Cairo", "Alex", "Gisa"};
-        String[] cities = {"Haram", "October", "Nasr City"};
+//        String[] governments = {"Cairo", "Alex", "Gisa", "Cairo", "Alex", "Gisa", "Cairo", "Alex", "Gisa", "Cairo", "Alex", "Gisa"
+//                , "Cairo", "Alex", "Gisa", "Cairo", "Alex", "Gisa", "Cairo", "Alex", "Gisa", "Cairo", "Alex", "Gisa", "Cairo", "Alex", "Gisa"};
+//        String[] cities = {"Haram", "October", "Nasr City"};
         int id = v.getId();
-        if (id == R.id.btnGovernment) {
-            for (int i = 0; i < governments.length; i++) {
-                menu.add(Menu.NONE, i, Menu.NONE, governments[i]);
-            }
-        } else {
-
-            for (int i = 0; i < cities.length; i++) {
-                menu.add(Menu.NONE, i, Menu.NONE, cities[i]);
-            }
+        switch (id) {
+            case R.id.btnGovernment:
+                for (int i = 0; i < governmentFilterList.size(); i++) {
+                    governmentModel = governmentFilterList.get(i).getName() + "," + governmentFilterList.get(i).getId();
+                    String title = governmentModel.substring(0, governmentModel.indexOf(","));
+                    menu.add(Menu.NONE, i, Menu.NONE, title);
+                    Log.v("MenuData", governmentFilterList.get(i).getId());
+                }
+                break;
+            case R.id.btnCity:
+                for (int i = 0; i < cityFilterModelArrayList.size(); i++) {
+                    menu.add(Menu.NONE, i, Menu.NONE, cityFilterModelArrayList.get(i).getName());
+                }
+                break;
         }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 
+        String gov_id = governmentModel.substring(governmentModel.indexOf(",") + 1);
+        getCities(gov_id);
         Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+
         return super.onContextItemSelected(item);
     }
 

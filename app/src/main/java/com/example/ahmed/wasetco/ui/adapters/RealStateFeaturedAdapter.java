@@ -2,6 +2,7 @@ package com.example.ahmed.wasetco.ui.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,12 +93,13 @@ public class RealStateFeaturedAdapter extends RecyclerView.Adapter<RealStateFeat
         TextView tvPrice;
         @BindView(R.id.tvBathroom)
         TextView tvBathroom;
-
+        @BindView(R.id.cv)
+        CardView cv;
         public RealEstatViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            itemView.setOnClickListener(view -> {
+            cv.setOnClickListener(view -> {
                 int position = getAdapterPosition();
                 if (listener != null && position != RecyclerView.NO_POSITION) {
                     listener.onItemClick(realEstatesFeatured.get(position));

@@ -17,6 +17,7 @@ import com.example.ahmed.wasetco.data.models.RealEstateSaleModel;
 import com.example.ahmed.wasetco.data.models.RequestType;
 import com.example.ahmed.wasetco.data.models.filter_models.CityFilterModel;
 import com.example.ahmed.wasetco.data.models.filter_models.FinishingTypeFilterModel;
+import com.example.ahmed.wasetco.data.models.filter_models.GovernTestModel;
 import com.example.ahmed.wasetco.data.models.filter_models.GovernmentFilterModel;
 import com.example.ahmed.wasetco.data.models.filter_models.PropertyNameFilterModel;
 
@@ -323,6 +324,32 @@ public class Repository {
 
         mVolleyService = new VolleyService(mResultCallback, mContext);
         mVolleyService.getDataVolley(Constants.GET_CALL_JSON_ARRAY, Constants.GET_ALL_FINISHES_FILTER);
+        return data;
+    }
+
+    public LiveData<GovernTestModel> getGovernmentTestFilter(String id) {
+        final MutableLiveData<GovernTestModel> data = new MutableLiveData<>();
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType, JSONObject response) {
+                GovernTestModel governTestModel = JsonParser.parseTestGovernmentFilter(response);
+                data.setValue(governTestModel);
+                Log.v("ResponseGovernmentTest", "Success " + response.toString());
+            }
+
+            @Override
+            public void notifyError(String requestType, VolleyError error) {
+                Log.v("ResponsePropertyNames", "Fail" + error.getMessage());
+            }
+
+            @Override
+            public void notifySuccess(String requestType, JSONArray response) {
+
+            }
+        };
+
+        mVolleyService = new VolleyService(mResultCallback, mContext);
+        mVolleyService.getDataVolley(Constants.GET_CALL_JSON_ARRAY, Constants.GET_ALL_GOVERNMENTS_TEST_FILTER + id);
         return data;
     }
 }
